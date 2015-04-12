@@ -30,6 +30,10 @@ class AGSRestError(Exception): pass
 class ServerError(Exception): pass
 
 def _validate_response(response):
+    """ Tests response for HTTP 200 code, tests that response is json,
+        and searches for typical AGS error indicators in json.
+        Raises an exception if response does not validate successfully.
+    """
     if not response.ok:
         raise ServerError("Server Error: {}".format(response.text))
 
@@ -49,13 +53,14 @@ def _validate_response(response):
         raise ServerError("Server returned HTML: {}".format(response.text))
 
 
-def _get_token():
+def _get_token(username, password):
+    """ Returns token from server """
     token_url = "{protocol}{host}/arcgis/tokens/".format(
         protocol=PROTOCOL, host=HOST)
 
     data = { "f": "json",
-             "username": USER,
-             "password": PASSWORD,
+             "username": username,
+             "password": password,
              "client": "requestip",
              "expiration": 5 }
     response = requests.post(token_url, data)
@@ -64,11 +69,14 @@ def _get_token():
     return token
 
 
-def _upload_soe_file(token):
+def _upload_soe_file(soe_path, token):
+    """ Uploads .soe file to ArcGIS Server and returns itemID from
+        uploaded file
+    """
     upload_url = "{protocol}{host}/arcgis/admin/uploads/upload?f=json".format(
         protocol=PROTOCOL, host=HOST)
 
-    with open(SOE_FILE, 'rb') as soe_file:
+    with open(soe_path, 'rb') as soe_file:
         files = {'itemFile': soe_file}
         data = {
             "token": token
@@ -83,6 +91,7 @@ def _upload_soe_file(token):
 
 
 def _update_soe(item_id, token):
+    """ Updates SOE based on uploaded files itemID """
     update_url = "{protocol}{host}/arcgis/admin/services/types/extensions/update".format(
         protocol=PROTOCOL, host=HOST)
 
@@ -95,10 +104,11 @@ def _update_soe(item_id, token):
     _validate_response(response)
 
 
-def _start_services(token):
+def _start_services(services, token):
+    """ starts ArcGIS Server services """
     start_services_url = "{protocol}{host}/arcgis/admin/services/{service}/start"
 
-    for service in SERVICES:
+    for service in services:
         url = start_services_url.format(protocol=PROTOCOL,
                                         host=HOST,
                                         service=service)
@@ -115,11 +125,11 @@ def _start_services(token):
 
 if __name__ == "__main__":
     print("Retrieving token...")
-    token = _get_token()
+    token = _get_token(USER, PASSWORD)
     print("Retrieved: {}".format(token))
 
     print("Uploading SOE...")
-    item_id = _upload_soe_file(token)
+    item_id = _upload_soe_file(SOE_FILE, token)
     print("Uploaded: {}".format(item_id))
 
     print("Updating SOE...")
@@ -127,4 +137,4 @@ if __name__ == "__main__":
     print("Updated!")
 
     print("Starting services...")
-    _start_services(token)
+    _start_services(SERVICES, token)
