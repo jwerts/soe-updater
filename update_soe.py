@@ -1,12 +1,15 @@
 """
-------------------------------------------------------------------------------
-Name:        update_soe.py
-Purpose:     Update Server Object Extension from command line
-Author:      Josh Werts (@jwerts) (joshwerts@gmail.com)
-Created:     4/12/15
-License      MIT
 -------------------------------------------------------------------------------
-"""﻿
+Name:        update_soe.py
+Purpose:     Update server object extension from command line
+
+Author:      Josh Werts (@jwerts) (jwerts@patrickco.com)
+
+Created:     4/12/15
+Copyright:   (c) Josh Werts 2015
+License:     MIT
+-------------------------------------------------------------------------------
+"""
 
 from __future__ import print_function
 
