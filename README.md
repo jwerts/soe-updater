@@ -24,9 +24,19 @@ pip install requests
   # path to rebuilt SOE file
   SOE_FILE = r"C:\path_to_your_project\bin\Debug\yourSOE.soe"
   ```
-  
+
 2. Run from command line:
 
   ```
-  python update_soe.py
+  C:\Projects\_General\_Code\soe-updater>python update_soe.py
+  
+  Retrieving token...
+  Retrieved: oUK04q-J8ORWDUrSWGPfq8zAU29u3q5_YZ79ZvcFZx8kFneOMb5Z2Y2Yf19
+  Uploading SOE...
+  Uploaded: ibd792bae-a986-4861-8ac3-c16d42f4d610
+  Updating SOE...
+  Updated!
+  Starting services...
+  Starting service_folder/service.MapServer
+  Started!
   ```
