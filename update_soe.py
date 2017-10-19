@@ -3,7 +3,7 @@
 Name:        update_soe.py
 Purpose:     Update server object extension from command line
 
-Author:      Josh Werts (@jwerts) (jwerts@patrickco.com)
+Author:      Josh Werts (@jwerts) (joshwerts@gmail.com)
 
 Created:     4/12/15
 Copyright:   (c) Josh Werts 2015
